@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ShipDrop — Ship your project in 60 seconds</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0f0f1a;
+      color: #e0e0e0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      max-width: 560px;
+      width: 100%;
+      padding: 40px 24px;
+    }
+    .logo {
+      font-size: 48px;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    h1 {
+      text-align: center;
+      font-size: 32px;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .tagline {
+      text-align: center;
+      color: #6c63ff;
+      font-size: 16px;
+      margin-bottom: 40px;
+    }
+
+    .upload-zone {
+      border: 2px dashed #2a2a4a;
+      border-radius: 16px;
+      padding: 48px 24px;
+      text-align: center;
+      transition: all 0.2s;
+      cursor: pointer;
+      margin-bottom: 24px;
+    }
+    .upload-zone:hover, .upload-zone.dragover {
+      border-color: #6c63ff;
+      background: rgba(108, 99, 255, 0.05);
+    }
+    .upload-zone .icon { font-size: 40px; margin-bottom: 12px; }
+    .upload-zone p { color: #888; font-size: 14px; margin-top: 8px; }
+    .upload-zone .filename { color: #6c63ff; font-weight: 600; margin-top: 12px; }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 14px 16px;
+      background: #16213e;
+      border: 1px solid #2a2a4a;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 16px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-group input:focus {
+      border-color: #6c63ff;
+    }
+    .form-group .hint {
+      font-size: 12px;
+      color: #555;
+      margin-top: 6px;
+    }
+
+    .deploy-btn {
+      width: 100%;
+      padding: 16px;
+      background: #6c63ff;
+      border: none;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .deploy-btn:hover:not(:disabled) {
+      background: #5a52d5;
+      transform: scale(1.02);
+    }
+    .deploy-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .result {
+      margin-top: 24px;
+      padding: 20px;
+      border-radius: 12px;
+      display: none;
+    }
+    .result.success {
+      display: block;
+      background: #0a2a0a;
+      border: 1px solid #2d4a2d;
+    }
+    .result.error {
+      display: block;
+      background: #2a0a0a;
+      border: 1px solid #4a2d2d;
+    }
+    .result h3 { font-size: 18px; margin-bottom: 8px; }
+    .result .url {
+      font-size: 16px;
+      color: #6c63ff;
+      word-break: break-all;
+    }
+    .result .error-msg { color: #f44336; font-size: 14px; }
+
+    .status {
+      text-align: center;
+      padding: 12px;
+      margin-top: 16px;
+      display: none;
+      font-size: 14px;
+    }
+    .status.active { display: block; }
+    .status.deploying { color: #ffa726; }
+    .status.done { color: #4caf50; }
+
+    .footer {
+      text-align: center;
+      margin-top: 48px;
+      color: #444;
+      font-size: 13px;
+    }
+
+    .pricing {
+      background: #16213e;
+      border: 1px solid #2a2a4a;
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 28px;
+      text-align: center;
+    }
+    .price-row {
+      display: flex;
+      justify-content: center;
+      align-items: baseline;
+      gap: 12px;
+    }
+    .price-label { color: #fff; font-size: 18px; font-weight: 600; }
+    .price-amount { color: #6c63ff; font-size: 32px; font-weight: 700; }
+    .price-period { color: #888; font-size: 16px; font-weight: 400; }
+    .subscribe-btn {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #6c63ff, #a855f7);
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+    .subscribe-btn:hover { transform: scale(1.02); }
+    .subscribed-badge {
+      display: inline-block;
+      background: #0a2a0a;
+      border: 1px solid #2d4a2d;
+      color: #4caf50;
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">🚀</div>
+    <h1>ShipDrop</h1>
+    <p class="tagline">Deploy your project in 60 seconds</p>
+
+    <!-- Pricing / Subscribe -->
+    <div class="pricing" id="pricingBox">
+      <div class="price-row">
+        <span class="price-label">🚀 ShipDrop Pro</span>
+        <span class="price-amount">$9.99<span class="price-period">/mo</span></span>
+      </div>
+      <p style="color:#888;font-size:13px;margin:8px 0 16px;">Unlimited projects. Custom domain. HTTPS included.</p>
+      <button class="subscribe-btn" id="subscribeBtn">Subscribe & Start Shipping →</button>
+    </div>
+
+    <!-- Upload zone -->
+    <div class="upload-zone" id="uploadZone">
+      <div class="icon">📂</div>
+      <strong style="color:#fff;">Drop your project here</strong>
+      <p>HTML/CSS/JS files — zip or single file</p>
+      <div class="filename" id="fileName"></div>
+    </div>
+    <input type="file" id="fileInput" accept=".zip,.html,.htm" style="display:none">
+
+    <!-- Project name -->
+    <div class="form-group">
+      <label>Project Name</label>
+      <input type="text" id="projectName" placeholder="my-awesome-app" maxlength="40">
+      <div class="hint">Goes live at: <strong>shipdrop.dev/projects/my-awesome-app</strong></div>
+    </div>
+
+    <!-- Deploy button -->
+    <button class="deploy-btn" id="deployBtn" disabled>⚡ Deploy to the Web</button>
+
+    <div class="status" id="status"></div>
+    <div class="result" id="result"></div>
+
+    <div class="footer">Built by <a href="https://sg1-labs.us" style="color:#444;">SG1 Labs</a></div>
+  </div>
+
+  <script>
+    const uploadZone = document.getElementById('uploadZone');
+    const fileInput = document.getElementById('fileInput');
+    const fileName = document.getElementById('fileName');
+    const projectName = document.getElementById('projectName');
+    const deployBtn = document.getElementById('deployBtn');
+    const status = document.getElementById('status');
+    const result = document.getElementById('result');
+
+    let selectedFile = null;
+
+    // Subscribe button
+    document.getElementById('subscribeBtn').addEventListener('click', async () => {
+      const btn = document.getElementById('subscribeBtn');
+      btn.textContent = '⏳ Redirecting to Stripe...';
+      btn.disabled = true;
+      try {
+        const resp = await fetch('/api/create-checkout', { method: 'POST' });
+        const data = await resp.json();
+        window.location.href = data.url;
+      } catch (err) {
+        btn.textContent = 'Subscribe & Start Shipping →';
+        btn.disabled = false;
+        alert('Checkout failed. Please try again.');
+      }
+    });
+
+    uploadZone.addEventListener('click', () => fileInput.click());
+    uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('dragover'); });
+    uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
+    uploadZone.addEventListener('drop', e => {
+      e.preventDefault();
+      uploadZone.classList.remove('dragover');
+      if (e.dataTransfer.files.length > 0) {
+        handleFile(e.dataTransfer.files[0]);
+      }
+    });
+
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files.length > 0) handleFile(fileInput.files[0]);
+    });
+
+    function handleFile(file) {
+      selectedFile = file;
+      fileName.textContent = '📄 ' + file.name;
+      updateDeployButton();
+    }
+
+    projectName.addEventListener('input', updateDeployButton);
+    projectName.addEventListener('input', () => {
+      // Auto-slugify
+      projectName.value = projectName.value.toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-');
+    });
+
+    function updateDeployButton() {
+      deployBtn.disabled = !(selectedFile && projectName.value.trim());
+    }
+
+    deployBtn.addEventListener('click', async () => {
+      if (!selectedFile || !projectName.value.trim()) return;
+
+      deployBtn.disabled = true;
+      deployBtn.textContent = '⏳ Deploying...';
+      status.className = 'status active deploying';
+      status.textContent = 'Uploading project...';
+      result.className = 'result';
+
+      const formData = new FormData();
+      formData.append('name', projectName.value.trim());
+      formData.append('project', selectedFile);
+
+      try {
+        const resp = await fetch('/api/deploy', {
+          method: 'POST',
+          body: formData
+        });
+
+        const data = await resp.json();
+
+        if (resp.ok && data.success) {
+          status.className = 'status active done';
+          status.textContent = '✅ Deployed successfully!';
+          result.className = 'result success';
+          result.innerHTML = `
+            <h3>🎉 Your project is live!</h3>
+            <p style="margin-top:8px;color:#888;">🌐 <a class="url" href="${data.url}" target="_blank">${data.url}</a></p>
+            <p style="margin-top:4px;color:#888;">🔗 <a class="url" href="${data.short_url}" target="_blank">${data.short_url}</a></p>
+          `;
+        } else {
+          throw new Error(data.detail || 'Deploy failed');
+        }
+      } catch (err) {
+        status.className = 'status active';
+        status.textContent = '';
+        result.className = 'result error';
+        result.innerHTML = `<h3>Deploy Failed</h3><p class="error-msg">${err.message}</p>`;
+      }
+
+      deployBtn.disabled = false;
+      deployBtn.textContent = '⚡ Deploy to the Web';
+    });
+  </script>
+</body>
+</html>
