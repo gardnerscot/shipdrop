@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ShipDrop — Drop your project. Ship to web.</title>
+  <meta name="description" content="One-click deployment for vibe coders. Drop your HTML project, pick a name, and it's live on the web in 30 seconds.">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0f0f1a;
+      color: #e0e0e0;
+      line-height: 1.6;
+    }
+    a { color: #6c63ff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .hero {
+      text-align: center;
+      padding: 100px 24px 80px;
+      background: linear-gradient(180deg, #16213e 0%, #0f0f1a 100%);
+    }
+    .hero-logo { font-size: 72px; margin-bottom: 16px; }
+    .hero h1 { font-size: 52px; font-weight: 700; color: #fff; margin-bottom: 8px; letter-spacing: -1px; }
+    .hero .tagline { font-size: 22px; color: #6c63ff; margin-bottom: 8px; }
+    .hero .sub { font-size: 18px; color: #888; margin-bottom: 48px; max-width: 550px; margin-left: auto; margin-right: auto; }
+    .hero .cta {
+      display: inline-block; padding: 18px 56px; background: #6c63ff; color: #fff;
+      border-radius: 14px; font-size: 20px; font-weight: 600; transition: background 0.2s, transform 0.15s;
+    }
+    .hero .cta:hover { background: #5a52d5; transform: scale(1.03); text-decoration: none; }
+
+    .problem { max-width: 680px; margin: 0 auto; padding: 80px 24px; text-align: center; }
+    .problem h2 { font-size: 32px; color: #fff; margin-bottom: 16px; }
+    .problem p { font-size: 18px; color: #888; margin-bottom: 32px; }
+    .frustrated { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+    .frustration { background: #1e1e3a; border: 1px solid #2a2a4a; padding: 12px 20px; border-radius: 8px; font-size: 14px; color: #999; }
+
+    .how { max-width: 900px; margin: 0 auto; padding: 80px 24px; }
+    .how h2 { text-align: center; font-size: 32px; color: #fff; margin-bottom: 48px; }
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 28px; }
+    .step { background: #16213e; border-radius: 14px; padding: 36px 24px; text-align: center; border: 1px solid #2a2a4a; }
+    .step-icon { font-size: 44px; margin-bottom: 16px; }
+    .step h3 { font-size: 18px; color: #fff; margin-bottom: 8px; }
+    .step p { font-size: 14px; color: #888; }
+
+    .features { max-width: 900px; margin: 0 auto; padding: 60px 24px 80px; }
+    .features h2 { text-align: center; font-size: 32px; color: #fff; margin-bottom: 48px; }
+    .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+    .feature { display: flex; gap: 14px; align-items: flex-start; }
+    .feature-icon { font-size: 24px; flex-shrink: 0; margin-top: 2px; }
+    .feature h3 { font-size: 16px; color: #fff; margin-bottom: 4px; }
+    .feature p { font-size: 14px; color: #888; }
+
+    .cta-bottom {
+      text-align: center; padding: 100px 24px;
+      background: linear-gradient(0deg, #16213e 0%, #0f0f1a 100%);
+    }
+    .cta-bottom h2 { font-size: 36px; color: #fff; margin-bottom: 16px; }
+    .cta-bottom p { font-size: 18px; color: #888; margin-bottom: 36px; }
+
+    footer { text-align: center; padding: 40px 24px; border-top: 1px solid #2a2a4a; font-size: 13px; color: #444; }
+  </style>
+</head>
+<body>
+
+  <section class="hero">
+    <div class="hero-logo">📦</div>
+    <h1>ShipDrop</h1>
+    <p class="tagline">Drop your project. Ship to web.</p>
+    <p class="sub">One click deploys your HTML project live. No DevOps. No config. No nonsense.</p>
+    <a class="cta" href="https://go.sg1-labs.us/shipdrop">⚡ Start Shipping →</a>
+  </section>
+
+  <section class="problem">
+    <h2>The Vibe Coder's Wall</h2>
+    <p>You built something amazing with AI. It works on your laptop. Now what?</p>
+    <div class="frustrated">
+      <span class="frustration">"How do I deploy this?"</span>
+      <span class="frustration">"What's a DNS record?"</span>
+      <span class="frustration">"Vercel wants my credit card"</span>
+      <span class="frustration">"GitHub Pages has 4 config files"</span>
+      <span class="frustration">"SSL certificates?"</span>
+      <span class="frustration">"What's a build pipeline?"</span>
+    </div>
+  </section>
+
+  <section class="how">
+    <h2>Ship in 30 Seconds</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-icon">📂</div>
+        <h3>Drop</h3>
+        <p>Drag and drop your HTML file. Single page, zip, doesn't matter.</p>
+      </div>
+      <div class="step">
+        <div class="step-icon">✏️</div>
+        <h3>Name</h3>
+        <p>Pick a name. That becomes your URL at <strong>shipdrop.dev</strong>.</p>
+      </div>
+      <div class="step">
+        <div class="step-icon">🌐</div>
+        <h3>Ship</h3>
+        <p>Click deploy. 30 seconds later, live on the internet. Share the link.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <h2>Why ShipDrop?</h2>
+    <div class="feature-grid">
+      <div class="feature"><div class="feature-icon">⚡</div><div><h3>Zero Config</h3><p>No build tools, no CI/CD, no YAML. Your project just works.</p></div></div>
+      <div class="feature"><div class="feature-icon">🔗</div><div><h3>Instant URL</h3><p>Every deploy gets a shareable short link immediately.</p></div></div>
+      <div class="feature"><div class="feature-icon">🆓</div><div><h3>Free to Start</h3><p>Deploy your first project for free. Pay when you're ready to scale.</p></div></div>
+      <div class="feature"><div class="feature-icon">🔒</div><div><h3>HTTPS by Default</h3><p>Every project gets SSL automatically. No certificate setup.</p></div></div>
+      <div class="feature"><div class="feature-icon">📦</div><div><h3>Any Static Site</h3><p>HTML, CSS, JS. If it runs in a browser, ShipDrop deploys it.</p></div></div>
+      <div class="feature"><div class="feature-icon">🎯</div><div><h3>Built for Vibe Coders</h3><p>Not for DevOps engineers. For people who build with AI and just want it live.</p></div></div>
+    </div>
+  </section>
+
+  <section class="cta-bottom">
+    <h2>Your project deserves to be seen.</h2>
+    <p>Stop letting your best work rot on localhost.</p>
+    <a class="cta" href="https://go.sg1-labs.us/shipdrop">⚡ Ship It Now →</a>
+  </section>
+
+  <footer>
+    ShipDrop by <a href="https://sg1-labs.us">SG1 Labs</a> · Deploy from anywhere.
+  </footer>
+
+</body>
+</html>
