@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prediction Tracker — Hold the experts accountable</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0d1117; color: #c9d1d9; min-height: 100vh }
+  .container { max-width: 800px; margin: 0 auto; padding: 40px 20px }
+  h1 { font-size: 2rem; color: #f0f6fc; margin-bottom: 4px }
+  .tagline { color: #8b949e; margin-bottom: 32px; font-size: 1rem }
+  nav { display: flex; gap: 16px; margin-bottom: 24px; border-bottom: 1px solid #21262d; padding-bottom: 12px }
+  nav a { color: #8b949e; text-decoration: none; font-size: 0.95rem; cursor: pointer; padding-bottom: 12px; border-bottom: 2px solid transparent; margin-bottom: -13px }
+  nav a.active { color: #f0883e; border-bottom-color: #f0883e }
+
+  /* Add form */
+  .form-card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 20px; margin-bottom: 24px }
+  .form-card h3 { color: #f0f6fc; margin-bottom: 16px }
+  .form-row { display: flex; gap: 12px; margin-bottom: 12px; flex-wrap: wrap }
+  .form-row input, .form-row textarea { flex: 1; min-width: 200px; background: #0d1117; border: 1px solid #30363d; border-radius: 6px; padding: 8px 12px; color: #c9d1d9; font-size: 0.9rem }
+  .form-row input:focus, .form-row textarea:focus { border-color: #f0883e; outline: none }
+  textarea { resize: vertical; min-height: 60px }
+  button { background: #f0883e; color: #0d1117; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.9rem; transition: background .2s }
+  button:hover { background: #e07b30 }
+  button.small { padding: 4px 12px; font-size: 0.8rem }
+  button.danger { background: #da3633 }
+  button.danger:hover { background: #c62828 }
+  button.success { background: #238636 }
+  button.success:hover { background: #2ea043 }
+  button.ghost { background: transparent; color: #8b949e; border: 1px solid #30363d }
+  button.ghost:hover { background: #21262d }
+
+  /* Cards */
+  .prediction-card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 16px; margin-bottom: 12px }
+  .prediction-card .meta { font-size: 0.85rem; color: #8b949e; margin-bottom: 8px }
+  .prediction-card .meta strong { color: #f0883e }
+  .prediction-card .body { font-size: 0.95rem; color: #c9d1d9; margin-bottom: 10px; line-height: 1.5 }
+  .prediction-card .actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 600 }
+  .badge.pending { background: #1f2a3a; color: #8b949e }
+  .badge.correct { background: #0d3320; color: #3fb950 }
+  .badge.wrong { background: #3d1c1c; color: #f85149 }
+
+  /* Leaderboard */
+  .lb-row { display: flex; align-items: center; padding: 12px 16px; border-bottom: 1px solid #21262d }
+  .lb-row:last-child { border-bottom: none }
+  .lb-row .rank { width: 32px; font-size: 1.1rem; font-weight: 700; color: #f0883e }
+  .lb-row .name { flex: 1; font-weight: 600 }
+  .lb-row .stats { display: flex; gap: 16px; font-size: 0.85rem; color: #8b949e }
+  .lb-row .bar-wrap { width: 120px; height: 8px; background: #21262d; border-radius: 4px; overflow: hidden; margin-left: 12px }
+  .lb-row .bar { height: 100%; background: #3fb950; border-radius: 4px; transition: width .3s }
+
+  .empty { text-align: center; padding: 40px; color: #8b949e }
+  .footer { text-align: center; padding: 20px; color: #484f58; font-size: 0.85rem; margin-top: 40px }
+  .view-switch { display: none }
+  .view-switch.active { display: block }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>📊 Prediction Tracker</h1>
+  <p class="tagline">Archive expert predictions. Track outcomes. Rub their faces in it.</p>
+
+  <nav>
+    <a class="active" onclick="showView('add')">Add Prediction</a>
+    <a onclick="showView('feed')">All Predictions</a>
+    <a onclick="showView('leaderboard')">Leaderboard</a>
+  </nav>
+
+  <!-- Add Prediction -->
+  <div id="view-add" class="view-switch active">
+    <div class="form-card">
+      <h3>Track a Prediction</h3>
+      <div class="form-row">
+        <input id="predictor" placeholder="Who said it? (e.g. Jim Cramer)" style="flex:1">
+        <input id="predicted_date" type="date" style="flex:1">
+      </div>
+      <div class="form-row">
+        <textarea id="prediction" placeholder="What did they predict? Be specific."></textarea>
+      </div>
+      <div class="form-row">
+        <input id="source_url" placeholder="Source URL (optional)">
+        <button onclick="addPrediction()">Track This Prediction</button>
+      </div>
+      <p id="add-status" style="margin-top:8px;font-size:0.85rem;color:#3fb950;display:none"></p>
+    </div>
+
+    <!-- Recent -->
+    <h3 style="color:#f0f6fc;margin:24px 0 12px">Recently Tracked</h3>
+    <div id="recent-list"><div class="empty">No predictions yet. Add one above.</div></div>
+  </div>
+
+  <!-- All Predictions -->
+  <div id="view-feed" class="view-switch">
+    <div style="margin-bottom:16px;display:flex;gap:8px">
+      <input id="filter-predictor" placeholder="Filter by predictor..." style="flex:1;background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:8px 12px;color:#c9d1d9" oninput="loadPredictions()">
+      <select id="filter-status" onchange="loadPredictions()" style="background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:8px 12px;color:#c9d1d9">
+        <option value="">All</option>
+        <option value="pending">Pending</option>
+        <option value="correct">Correct ✅</option>
+        <option value="wrong">Wrong ❌</option>
+      </select>
+    </div>
+    <div id="prediction-list"><div class="empty">Loading...</div></div>
+  </div>
+
+  <!-- Leaderboard -->
+  <div id="view-leaderboard" class="view-switch">
+    <div class="form-card" id="lb-card">
+      <h3>Predictor Accuracy</h3>
+      <div id="lb-list"><div class="empty">Loading...</div></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <a href="/" style="color:#58a6ff">Prediction Tracker</a> · Built by SG1 Labs
+  </div>
+</div>
+
+<script>
+const API = '';
+
+function showView(name) {
+  document.querySelectorAll('.view-switch').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+  event.target.classList.add('active');
+  if (name === 'feed') loadPredictions();
+  if (name === 'leaderboard') loadLeaderboard();
+  if (name === 'add') loadRecent();
+}
+
+async function addPrediction() {
+  const p = document.getElementById('predictor').value.trim();
+  const t = document.getElementById('prediction').value.trim();
+  const d = document.getElementById('predicted_date').value;
+  const u = document.getElementById('source_url').value.trim();
+  if (!p || !t || !d) return alert('Fill in predictor, prediction, and date.');
+
+  const res = await fetch(API + '/api/predictions', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({predictor: p, prediction: t, predicted_date: d, source_url: u})
+  });
+  if (res.ok) {
+    document.getElementById('predictor').value = '';
+    document.getElementById('prediction').value = '';
+    document.getElementById('source_url').value = '';
+    const st = document.getElementById('add-status');
+    st.textContent = '✅ Prediction tracked!';
+    st.style.display = 'block';
+    setTimeout(() => st.style.display = 'none', 2000);
+    loadRecent();
+  }
+}
+
+async function scorePrediction(id, outcome) {
+  await fetch(API + `/api/predictions/${id}/score`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({outcome})
+  });
+  loadPredictions();
+}
+
+async function loadRecent() {
+  const res = await fetch(API + '/api/predictions?limit=5');
+  const data = await res.json();
+  document.getElementById('recent-list').innerHTML = data.length
+    ? data.map(p => renderCard(p)).join('')
+    : '<div class="empty">No predictions yet. Add one above.</div>';
+}
+
+async function loadPredictions() {
+  const pred = document.getElementById('filter-predictor')?.value || '';
+  const status = document.getElementById('filter-status')?.value || '';
+  const res = await fetch(API + `/api/predictions?predictor=${encodeURIComponent(pred)}&status=${status}&limit=50`);
+  const data = await res.json();
+  document.getElementById('prediction-list').innerHTML = data.length
+    ? data.map(p => renderCard(p)).join('')
+    : '<div class="empty">No predictions found.</div>';
+}
+
+async function loadLeaderboard() {
+  const res = await fetch(API + '/api/leaderboard');
+  const data = await res.json();
+  if (!data.length) {
+    document.getElementById('lb-list').innerHTML = '<div class="empty">No predictions scored yet.</div>';
+    return;
+  }
+  document.getElementById('lb-list').innerHTML = data.map((r, i) => `
+    <div class="lb-row">
+      <div class="rank">#${i + 1}</div>
+      <div class="name"><a href="/predictor/${encodeURIComponent(r.predictor)}" style="color:#f0883e;text-decoration:none">${esc(r.predictor)}</a></div>
+      <div class="stats">
+        <span>✅ ${r.correct}</span>
+        <span>❌ ${r.wrong}</span>
+        <span>⏳ ${r.pending}</span>
+      </div>
+      <span style="font-weight:700;font-size:0.9rem;margin-left:8px;min-width:45px;text-align:right">${r.accuracy}%</span>
+      <div class="bar-wrap"><div class="bar" style="width:${r.accuracy}%"></div></div>
+    </div>
+  `).join('');
+}
+
+function renderCard(p) {
+  const badge = p.outcome === 'correct' ? '<span class="badge correct">✅ Correct</span>'
+    : p.outcome === 'wrong' ? '<span class="badge wrong">❌ Wrong</span>'
+    : '<span class="badge pending">⏳ Pending</span>';
+  const actions = p.outcome === 'pending'
+    ? `<button class="small success" onclick="scorePrediction(${p.id},'correct')">✅ Correct</button>
+       <button class="small danger" onclick="scorePrediction(${p.id},'wrong')">❌ Wrong</button>`
+    : '';
+  return `
+    <div class="prediction-card">
+      <div class="meta">
+        <strong>${esc(p.predictor)}</strong>
+        · ${p.predicted_date}
+        · ${badge}
+        ${p.source_url ? `· <a href="${esc(p.source_url)}" target="_blank" style="color:#58a6ff">source</a>` : ''}
+      </div>
+      <div class="body">${esc(p.prediction)}</div>
+      <div class="actions">${actions}</div>
+    </div>
+  `;
+}
+
+function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;') }
+
+// Init
+loadRecent();
+</script>
+</body>
+</html>
