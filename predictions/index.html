@@ -53,6 +53,16 @@
 
   .empty { text-align: center; padding: 40px; color: #8b949e }
   .footer { text-align: center; padding: 20px; color: #484f58; font-size: 0.85rem; margin-top: 40px }
+  .cross-sell { margin: 40px auto 0; }
+  .cross-sell h2 { color: #f0f6fc; text-align: center; margin-bottom: 20px; font-size: 1.15rem; }
+  .cross-sell .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+  .cross-sell .item { background: #111; border: 1px solid #333; border-radius: 8px; padding: 14px 10px; text-align: center; transition: border-color .2s; }
+  .cross-sell .item:hover { border-color: #6af; }
+  .cross-sell .item .emoji { font-size: 1.6em; }
+  .cross-sell .item h4 { color: #f0f6fc; margin: 6px 0 2px; font-size: .85em; }
+  .cross-sell .item p { color: #8b949e; font-size: .72em; margin: 0; }
+  .cross-sell .item .price { color: #6af; font-weight: 700; font-size: .78em; margin-top: 4px; display: block; }
+  .cross-sell a { text-decoration: none; color: inherit; display: block; }
   .view-switch { display: none }
   .view-switch.active { display: block }
 </style>
@@ -113,7 +123,31 @@
     </div>
   </div>
 
-  <div class="footer">
+  
+<div class="cross-sell">
+  <h2>Also from SG1 Labs</h2>
+  <div class="grid">
+    <a href="https://go.sg1-labs.us/tab-reminder"><div class="item">
+      <div class="emoji">⏰</div><h4>Tab Reminder</h4><p>Never lose a tab</p><span class="price">$4.99</span>
+    </div></a>
+    <a href="https://shipdrop.dev"><div class="item">
+      <div class="emoji">🚀</div><h4>ShipDrop</h4><p>Drag, drop, deploy</p><span class="price">$9.99/mo</span>
+    </div></a>
+    <a href="https://shipdrop.dev/trialguard"><div class="item">
+      <div class="emoji">🛡️</div><h4>Trial Guard</h4><p>Track free trials</p><span class="price">$0.99</span>
+    </div></a>
+    <a href="https://go.sg1-labs.us/talkboard"><div class="item">
+      <div class="emoji">🎤</div><h4>TalkBoard</h4><p>Dictation + clipboard</p><span class="price">$9.99</span>
+    </div></a>
+    <a href="https://go.sg1-labs.us/simple-calendar"><div class="item">
+      <div class="emoji">📅</div><h4>Simple Calendar</h4><p>Just the date</p><span class="price">Free</span>
+    </div></a>
+    <a href="https://go.sg1-labs.us/slopclean"><div class="item">
+      <div class="emoji">🧹</div><h4>SlopClean</h4><p>Clean AI code</p><span class="price">$9.99</span>
+    </div></a>
+  </div>
+</div>
+<div class="footer">
     <a href="/" style="color:#58a6ff">Prediction Tracker</a> · Built by SG1 Labs
   </div>
 </div>
