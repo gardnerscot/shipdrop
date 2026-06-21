@@ -35,6 +35,16 @@
   .cross-sell .item p { color: #8b949e; font-size: .72em; margin: 0; }
   .cross-sell .item .price { color: #238636; font-weight: 700; font-size: .78em; margin-top: 4px; display: block; }
   .cross-sell a { text-decoration: none; color: inherit; display: block; }
+  .subscribe-section { max-width: 500px; margin: 40px auto; text-align: center; padding: 0 20px; }
+  .subscribe-section h3 { color: #f0f6fc; margin-bottom: 8px; }
+  .subscribe-section p { color: #8b949e; font-size: .9em; margin-bottom: 16px; }
+  .subscribe-form { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .subscribe-form input { padding: 10px 16px; border-radius: 8px; border: 1px solid #30363d; background: #0d1117; color: #c9d1d9; font-size: .95em; min-width: 220px; }
+  .subscribe-form button { padding: 10px 24px; border-radius: 8px; border: none; background: #238636; color: #fff; font-weight: 600; cursor: pointer; font-size: .95em; }
+  .subscribe-form button:hover { background: #2ea043; }
+  .sub-msg { margin-top: 10px; font-size: .85em; }
+  .sub-msg.success { color: #3fb950; }
+  .sub-msg.error { color: #f85149; }
 </style>
 </head>
 <body>
@@ -79,6 +89,18 @@
     <p>Track the monthly cost of each trial. See exactly what you'd lose by forgetting.</p>
   </div>
 </div>
+
+<div class="subscribe-section">
+  <h3>📬 Stay in the loop</h3>
+  <p>New apps, updates, and digest. No spam.</p>
+  <form class="subscribe-form" onsubmit="subscribe(event)">
+    <input type="email" id="sub-email" placeholder="you@email.com" required>
+    <button type="submit">Subscribe</button>
+  </form>
+  <p class="sub-msg" id="sub-msg"></p>
+</div>
+
+<script>async function subscribe(e){e.preventDefault();const m=document.getElementById('sub-msg');try{const r=await fetch('https://app.shipdrop.dev/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:document.getElementById('sub-email').value,source:window.location.pathname})});const d=await r.json();if(d.ok){m.className='sub-msg success';m.textContent='✓ Subscribed!';document.getElementById('sub-email').value=''}else{m.className='sub-msg error';m.textContent=d.error||'Oops.'}}catch{m.className='sub-msg error';m.textContent='Network error.'}}</script>
 
 <div class="cross-sell">
   <h2>Also from SG1 Labs</h2>
