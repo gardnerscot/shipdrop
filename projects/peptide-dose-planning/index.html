@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Doses per vial: planning a peptide protocol before you order</title>
+<meta name="description" content="How to work out how many doses a vial actually contains, how long a titration schedule will last, and how to plan reconstitution volume around it.">
+<style>
+body{font:16px/1.65 Georgia,serif;max-width:42rem;margin:2rem auto;padding:0 1.2rem;color:#222;background:#fdfdfb}
+h1{font-size:1.65rem;line-height:1.3}h2{font-size:1.1rem;margin-top:2rem;font-family:sans-serif}
+table{border-collapse:collapse;width:100%;margin:1rem 0;font-family:sans-serif;font-size:.92rem}
+th,td{border:1px solid #ddd;padding:.4rem .55rem}th{background:#f3f2ee;text-align:left}
+code{font-family:ui-monospace,Menlo,monospace;background:#f1f0ec;padding:.1rem .3rem}
+.box{background:#f6f5f0;padding:.8rem 1rem;border-left:3px solid #b3a37a;font-size:.95rem}
+footer{margin-top:2.5rem;font-size:.86rem;color:#555;border-top:1px solid #e4e2dc;padding-top:1rem}
+</style>
+</head>
+<body>
+<h1>Doses per vial: planning a peptide protocol before you order</h1>
+
+<p>The question people ask after the first vial runs out sooner than expected is almost
+always the same one: how many doses was that supposed to be? It is worth answering before
+ordering rather than after, because the answer decides how many vials a titration schedule
+needs and how much diluent each one should get.</p>
+
+<h2>The only formula involved</h2>
+<p><code>doses per vial = vial contents (mg) / dose per injection (mg)</code></p>
+<p>That is the whole thing. Note what is absent: the volume of bacteriostatic water. Adding
+more water does not create more peptide. It spreads the same amount over a longer plunger
+travel, which changes how many units you draw, never how many doses exist. If a
+concentration change appears to change the dose count, something in the arithmetic is
+wrong.</p>
+
+<table>
+<tr><th>Vial</th><th>0.25 mg/dose</th><th>0.5 mg/dose</th><th>1 mg/dose</th><th>2 mg/dose</th></tr>
+<tr><td>5 mg</td><td>20</td><td>10</td><td>5</td><td>2.5</td></tr>
+<tr><td>10 mg</td><td>40</td><td>20</td><td>10</td><td>5</td></tr>
+<tr><td>15 mg</td><td>60</td><td>30</td><td>15</td><td>7.5</td></tr>
+</table>
+
+<h2>Turning doses into weeks</h2>
+<p>On a once-weekly protocol, doses per vial is weeks per vial directly. A 10 mg vial at
+0.5 mg weekly is 20 weeks on paper. In practice it is not, and the reason is the second
+constraint most planning ignores.</p>
+
+<div class="box">
+<strong>The in-use window usually beats the dose count.</strong> A reconstituted vial has a
+limited shelf life once it has been pierced, typically far shorter than 20 weeks. So the
+real number of doses a vial delivers is the smaller of two figures: the arithmetic dose
+count, and the number of doses that fit inside the in-use window. If the arithmetic says 20
+doses and the window allows 4 weekly injections, that vial is a 4-dose vial and the rest is
+waste. That is the single most common source of a peptide budget being wrong.
+</div>
+
+<h2>Choosing reconstitution volume around the plan</h2>
+<p>Once you know the dose, pick the diluent volume so the draw lands in a readable range on
+a U-100 syringe, roughly 5 to 50 units. Concentration is <code>mg in vial / mL added</code>
+and the draw is <code>dose / concentration x 100</code> units.</p>
+<ul>
+<li>10 mg vial, 1 mL water, 0.5 mg dose: 10 mg/mL, draw 5 units. Readable but tight.</li>
+<li>10 mg vial, 2 mL water, 0.5 mg dose: 5 mg/mL, draw 10 units. Comfortable.</li>
+<li>10 mg vial, 4 mL water, 0.5 mg dose: 2.5 mg/mL, draw 20 units. Very easy to read, but
+check the vial physically holds 4 mL first.</li>
+</ul>
+<p>The vial's own capacity is the ceiling here, and it is smaller than people assume. A
+standard 2 mL vial will not take 4 mL no matter what the arithmetic prefers.</p>
+
+<h2>Planning a titration, not a single dose</h2>
+<p>Titration schedules step the dose up, so the vial count is not one number. Work it
+stepwise: for each step, doses at that dose level divided into vial size, then round up to
+whole vials because a partly used vial at one dose level rarely carries cleanly into the
+next. Doing that in a spreadsheet works. Doing it in something that also holds the actual
+injection log works better, which is why I moved mine into the
+<a href="https://glp1.app/">Peptide Tracker &amp; Calculator</a> instead of keeping the
+plan and the record in two different places.</p>
+
+<h2>What to write on the vial</h2>
+<p>Three things, at the moment of reconstitution: the date, the resulting mg/mL, and the
+units per dose for whatever dose you are currently on. If the dose changes, update the third
+one. A vial labelled only with the compound name is a vial you will eventually have to
+discard because you cannot reconstruct what is in it.</p>
+
+<footer>
+General arithmetic notes, not medical advice. Doses, schedules, and whether any of this is
+appropriate at all are decisions for a prescribing clinician. Worked examples of the same
+formulas are available in this
+<a href="https://glp1.app/">reconstitution and dose calculator</a>.
+</footer>
+</body>
+</html>
