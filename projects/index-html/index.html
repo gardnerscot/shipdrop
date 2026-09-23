@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Photo Gallery</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    color: #222;
+  }
+  header {
+    text-align: center;
+    padding: 45px 20px 30px;
+    background: white;
+  }
+  h1 { margin: 0 0 10px; font-size: 36px; }
+  header p { margin: 0; color: #666; }
+  .gallery {
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 0 18px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px;
+  }
+  .photo {
+    background: white;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 3px 12px rgba(0,0,0,.08);
+  }
+  .photo img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    display: block;
+  }
+  .caption {
+    padding: 14px;
+    font-weight: bold;
+  }
+  footer {
+    text-align: center;
+    padding: 30px;
+    color: #777;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>My Photo Gallery</h1>
+  <p>A collection of my favorite pictures</p>
+</header>
+
+<main class="gallery">
+  <div class="photo">
+    <img src="https://picsum.photos/seed/photo1/700/500" alt="Gallery photo 1">
+    <div class="caption">Beautiful Moment</div>
+  </div>
+
+  <div class="photo">
+    <img src="https://picsum.photos/seed/photo2/700/500" alt="Gallery photo 2">
+    <div class="caption">Good Memories</div>
+  </div>
+
+  <div class="photo">
+    <img src="https://picsum.photos/seed/photo3/700/500" alt="Gallery photo 3">
+    <div class="caption">Special Day</div>
+  </div>
+
+  <div class="photo">
+    <img src="https://picsum.photos/seed/photo4/700/500" alt="Gallery photo 4">
+    <div class="caption">Favorite Place</div>
+  </div>
+
+  <div class="photo">
+    <img src="https://picsum.photos/seed/photo5/700/500" alt="Gallery photo 5">
+    <div class="caption">Another Memory</div>
+  </div>
+
+  <div class="photo">
+    <img src="https://picsum.photos/seed/photo6/700/500" alt="Gallery photo 6">
+    <div class="caption">Beautiful Life</div>
+  </div>
+</main>
+
+<footer>
+  © 2026 My Photo Gallery
+</footer>
+
+</body>
+</html>
